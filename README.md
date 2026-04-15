@@ -1,50 +1,47 @@
-# Ubuntu Sandbox 22.04
+# Ubuntu Sandbox
 
-Linux basics training environment for interns.
+Linux training env for interns. Ubuntu 22.04
 
-## Build
+## Build & Run
 
-```bash
-docker build -t ubuntu-sandbox:22.04 .
 ```
-
-## Run
-
-```bash
+docker build -t ubuntu-sandbox:22.04 .
 docker run -d -p 2222:22 ubuntu-sandbox:22.04
 ```
 
-## First Login
+## Login
 
-```bash
+```
 ssh yourname@localhost -p 2222
+ssh yourname@<ip> -p 2222
 ```
 
-On first login:
-1. SSH asks for password (any password)
-2. Container shows registration form
-3. Confirm username and set password
-4. User account auto-created
-5. You're logged in to bash
+First login will ask for registration. Confirm username, set password. Account gets created.
 
-## Audit Logging
+## Audit Log
 
-All sessions logged to `/var/log/audit/sessions.log`
-- Login time
-- Registration event
-- Logout time
+Sessions logged to `/var/log/audit/sessions.log`
 
 View logs:
-```bash
-docker exec <container_id> cat /var/log/audit/sessions.log
+```
+docker exec <container> cat /var/log/audit/sessions.log
 ```
 
-## Features
+Shows login, registration, logout times.
 
-- Ubuntu 22.04
-- SSH with password auth (PermitRootLogin disabled)
-- Auto-register on first login
-- Audit logging for all sessions
-- User home directories auto-created
-- Shared `/shared` directory
-- Essential tools: python3, git, build-essential, etc.
+## What's Installed
+
+- openssh, sudo
+- git, python3, python3-pip
+- curl, wget
+- build-essential
+- net-tools, iputils-ping
+- tree, htop
+
+No vim, nano, vi.
+
+## Dirs
+
+- `/shared` - shared folder (1777 perms)
+- `/var/log/audit/` - session logs
+- Each user gets home directory automatically

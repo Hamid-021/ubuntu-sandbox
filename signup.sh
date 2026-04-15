@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# Emergency user creation (optional utility)
-
-read -p "Username: " username
-if id "$username" &>/dev/null; then
-    echo "User exists"
-    exit 1
+read -p "Username: " user
+if id "$user" &>/dev/null; then
+    echo "Exists"
+    exit
 fi
 
-read -sp "Password: " password
+read -sp "Password: " pass
 echo ""
-
-useradd -m -s /bin/bash "$username"
-echo "$username:$password" | chpasswd
-echo "✓ User '$username' created"
+useradd -m -s /bin/bash "$user"
+echo "$user:$pass" | chpasswd
+echo "Done"
 

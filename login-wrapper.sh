@@ -1,65 +1,38 @@
 #!/bin/bash
 
-# Login wrapper - handles registration on first login and audit logging
-
-AUDIT_LOG="/var/log/audit/sessions.log"
 USERNAME=$USER
-LOGIN_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+AUDIT_LOG="/var/log/audit/sessions.log"
 
-# Function to log logout
-logout_handler() {
-    LOGOUT_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$LOGOUT_TIME] LOGOUT: User '$USERNAME' logged out" >> $AUDIT_LOG
-}
+trap "echo \"[$(date '+%Y-%m-%d %H:%M:%S')] LOGOUT: $USERNAME\" >> $AUDIT_LOG" EXIT
 
-# Set trap for logout
-trap logout_handler EXIT
-
-# Check if user already exists
 if ! id "$USERNAME" &>/dev/null; then
     clear
-    echo "======================================"
-    echo "  UBUNTU SANDBOX - USER REGISTRATION"
-    echo "======================================"
+    echo "===== REGISTRATION ====="
     echo ""
-    echo "Welcome! Create your account."
-    echo ""
-    
-    # Confirm username
     read -p "Confirm username: " confirm_user
+    
     if [ "$confirm_user" != "$USERNAME" ]; then
-        echo "❌ Username mismatch."
+        echo "Mismatch"
         exit 1
     fi
     
-    # Set password
     while true; do
-        read -sp "Set password: " password
+        read -sp "Password: " pw1
         echo ""
-        read -sp "Confirm password: " password_confirm
+        read -sp "Confirm: " pw2
         echo ""
-        
-        if [ "$password" = "$password_confirm" ]; then
+        if [ "$pw1" = "$pw2" ]; then
             break
-        else
-            echo "❌ Passwords don't match. Try again."
         fi
+        echo "No match"
     done
     
-    # Create user
-    useradd -m -s /bin/bash "$USERNAME" 2>/dev/null
-    echo "$USERNAME:$password" | chpasswd
+    useradd -m -s /bin/bash "$USERNAME"
+    echo "$USERNAME:$pw1" | chpasswd
     
-    echo ""
-    echo "✓ Account created successfully!"
-    echo ""
-    
-    # Log registration
-    echo "[$LOGIN_TIME] REGISTER: User '$USERNAME' created" >> $AUDIT_LOG
+    echo "Created!"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] REGISTER: $USERNAME" >> $AUDIT_LOG
 fi
 
-# Log login
-echo "[$LOGIN_TIME] LOGIN: User '$USERNAME' logged in" >> $AUDIT_LOG
-
-# Start bash shell
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] LOGIN: $USERNAME" >> $AUDIT_LOG
 bash
