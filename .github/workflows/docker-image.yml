@@ -41,5 +41,4 @@ jobs:
         tags: |
           rootusr7/ubuntu-sandbox:latest
           rootusr7/ubuntu-sandbox:${{ steps.version.outputs.VERSION }}
-          rootusr7/ubuntu-sandbox:${{ steps.version.outputs.MAJOR_MINOR }}
-          rootusr7/ubuntu-sandbox:${{ steps.version.outputs.MAJOR }}
+
