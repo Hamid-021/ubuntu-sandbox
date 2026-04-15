@@ -61,10 +61,4 @@ No vim, nano, vi.
 - `/var/log/audit/` - session logs
 - Each user gets home directory automatically
 
-<<<<<<< HEAD
 [My Docker Hub](https://app.docker.com/accounts/rootusr7)
-=======
-[My Docker Hub](https://app.docker.com/accounts/rootusr7)
-
-
->>>>>>> c9c28a12b90158129dd1b5f9bd6de7c886b240db
