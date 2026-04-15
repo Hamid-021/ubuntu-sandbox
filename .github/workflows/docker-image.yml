@@ -27,10 +27,6 @@ jobs:
       run: |
         VERSION=$(cat VERSION)
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        MAJOR=$(echo $VERSION | cut -d. -f1)
-        MAJOR_MINOR=$(echo $VERSION | cut -d. -f1-2)
-        echo "MAJOR=$MAJOR" >> $GITHUB_OUTPUT
-        echo "MAJOR_MINOR=$MAJOR_MINOR" >> $GITHUB_OUTPUT
 
     - name: Build and push
       uses: docker/build-push-action@v4

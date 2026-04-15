@@ -1,62 +1,52 @@
 # Ubuntu Sandbox
 
-Linux training env for interns. Ubuntu 22.04
+Linux training for interns on Ubuntu 22.04
 
 ## Build & Run
 
 ```
-docker build -t ubuntu-sandbox:22.04 .
-docker run -d -p 2222:22 ubuntu-sandbox:22.04
+docker build -t ubuntu-sandbox:latest .
+docker run -d -p 2222:22 ubuntu-sandbox:latest
 ```
 
 ## Login
 
+Pre-created users:
+
+| User | Password |
+|------|----------|
+| intern1 | intern123 |
+| intern2 | intern123 |
+| intern3 | intern123 |
+
 ```
-ssh yourname@localhost -p 2222
-ssh yourname@<ip> -p 2222
+ssh intern1@localhost -p 2222
 ```
 
-First login will ask for registration. Confirm username, set password. Account gets created.
+## Installed Tools
+
+- openssh, sudo, git
+- python3, python3-pip
+- curl, wget, build-essential
+- net-tools, iputils-ping, tree, htop
+
+No vim, nano, vi
+
+## Audit Logs
+
+Login/logout recorded to `/var/log/audit/sessions.log`
+
+View:
+```
+docker exec <container-id> cat /var/log/audit/sessions.log
+```
+
+## Shared Directory
+
+`/shared` - common workspace (chmod 1777)
 
 ## Versioning
 
-Version controlled in `VERSION` file. Current: 1.0.0
+Edit `VERSION` file to update. GitHub Actions auto-builds & pushes tags.
 
-Docker Hub tags created automatically on push:
-- `latest` - always latest
-- `1.0.0` - version
-
-To update version:
-1. Edit `VERSION` file (e.g., 1.1.0)
-2. Commit & push
-3. GitHub Actions auto-builds & pushes all tags
-
-## Audit Log
-
-Sessions logged to `/var/log/audit/sessions.log`
-
-View logs:
-```
-docker exec <container> cat /var/log/audit/sessions.log
-```
-
-Shows login, registration, logout times.
-
-## What's Installed
-
-- openssh, sudo
-- git, python3, python3-pip
-- curl, wget
-- build-essential
-- net-tools, iputils-ping
-- tree, htop
-
-No vim, nano, vi.
-
-## Dirs
-
-- `/shared` - shared folder (1777 perms)
-- `/var/log/audit/` - session logs
-- Each user gets home directory automatically
-
-[My Docker Hub](https://app.docker.com/accounts/rootusr7)
+Current version: 1.0.0
