@@ -18,6 +18,21 @@ ssh yourname@<ip> -p 2222
 
 First login will ask for registration. Confirm username, set password. Account gets created.
 
+## Versioning
+
+Version controlled in `VERSION` file. Current: 1.0.0
+
+Docker Hub tags created automatically on push:
+- `latest` - always latest
+- `1.0.0` - exact version
+- `1.0` - major.minor
+- `1` - major only
+
+To update version:
+1. Edit `VERSION` file (e.g., 1.1.0)
+2. Commit & push
+3. GitHub Actions auto-builds & pushes all tags
+
 ## Audit Log
 
 Sessions logged to `/var/log/audit/sessions.log`
@@ -46,5 +61,10 @@ No vim, nano, vi.
 - `/var/log/audit/` - session logs
 - Each user gets home directory automatically
 
+<<<<<<< HEAD
+[My Docker Hub](https://app.docker.com/accounts/rootusr7)
+=======
 [My Docker Hub](https://app.docker.com/accounts/rootusr7)
 
+
+>>>>>>> c9c28a12b90158129dd1b5f9bd6de7c886b240db
