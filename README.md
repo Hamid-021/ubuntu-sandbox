@@ -24,9 +24,7 @@ Version controlled in `VERSION` file. Current: 1.0.0
 
 Docker Hub tags created automatically on push:
 - `latest` - always latest
-- `1.0.0` - exact version
-- `1.0` - major.minor
-- `1` - major only
+- `1.0.0` - version
 
 To update version:
 1. Edit `VERSION` file (e.g., 1.1.0)
