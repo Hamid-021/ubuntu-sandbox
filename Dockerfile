@@ -30,9 +30,6 @@ RUN chmod +x \
     
 RUN echo 'session optional pam_exec.so /usr/local/bin/audit-logger.sh' >> /etc/pam.d/sshd
  
-RUN mkdir -p /etc/shellinabox
-COPY scripts/shellinabox.service /etc/shellinabox/shellinabox.service
- 
 # Only port 8080 (web) is needed externally
 EXPOSE 8080
  
