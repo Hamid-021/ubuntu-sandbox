@@ -1,12 +1,13 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server sudo curl wget git \
-    python3 python3-pip build-essential \
+    python3 python3-pip \
     net-tools iputils-ping tree htop \
     shellinabox uuid-runtime \
-    && rm -rf /var/lib/apt/lists/*
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /var/run/sshd
 # SSH settings

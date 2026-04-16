@@ -37,4 +37,6 @@ jobs:
         tags: |
           rootusr7/ubuntu-sandbox:latest
           rootusr7/ubuntu-sandbox:${{ steps.version.outputs.VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
