@@ -19,9 +19,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# SSH config
+# SSH server config - clean up deprecated options
 RUN mkdir -p /var/run/sshd && \
     sed -i \
+      -e '/RhostsRSAAuthentication/d' \
+      -e '/RSAAuthentication/d' \
       -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
       -e 's/#PasswordAuthentication.*/PasswordAuthentication yes/' \
       /etc/ssh/sshd_config && \
@@ -49,6 +51,8 @@ RUN chmod +x \
     /usr/local/bin/audit-logger.sh \
     /usr/local/bin/session-wrapper.sh \
     /usr/local/bin/entrypoint.sh
+
+RUN ssh-keygen -A
 
 EXPOSE 8080
 
