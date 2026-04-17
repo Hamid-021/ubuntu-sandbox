@@ -2,12 +2,6 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# ── Switch to US mirror ──────────────────────────────────────────────────────
-RUN sed -i \
-      -e 's|http://archive.ubuntu.com/ubuntu|http://us.archive.ubuntu.com/ubuntu|g' \
-      -e 's|http://security.ubuntu.com/ubuntu|http://us.archive.ubuntu.com/ubuntu|g' \
-      /etc/apt/sources.list
-
 # ── Packages — NO shellinabox (using Guacamole for web access) ───────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server \
