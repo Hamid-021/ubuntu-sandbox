@@ -2,8 +2,10 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server \
+    openssh-client \
     sudo \
     curl \
     wget \
@@ -19,17 +21,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# SSH server config - clean up deprecated options
+# SSH server config 
 RUN mkdir -p /var/run/sshd && \
     sed -i \
-      -e '/RhostsRSAAuthentication/d' \
-      -e '/RSAAuthentication/d' \
       -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
       -e 's/#PasswordAuthentication.*/PasswordAuthentication yes/' \
       /etc/ssh/sshd_config && \
     printf '\n# Sandbox settings\nListenAddress 127.0.0.1\nForceCommand /usr/local/bin/session-wrapper.sh\nAllowUsers intern1 intern2 intern3\nAllowTcpForwarding no\nX11Forwarding no\nPermitTunnel no\n' \
       >> /etc/ssh/sshd_config
 
+# SSH CLIENT config 
+RUN printf '\nHost localhost 127.0.0.1\n    StrictHostKeyChecking no\n    UserKnownHostsFile /dev/null\n    LogLevel QUIET\n' \
+      >> /etc/ssh/ssh_config
+
+# Pre-generate SSH host keys
+RUN ssh-keygen -A
+
+# Users 
 RUN useradd -m -s /bin/bash intern1 && \
     useradd -m -s /bin/bash intern2 && \
     useradd -m -s /bin/bash intern3 && \
@@ -43,6 +51,7 @@ RUN mkdir -p /shared /var/log/audit/sessions && \
     echo 'session optional pam_exec.so /usr/local/bin/audit-logger.sh' >> /etc/pam.d/sshd && \
     echo 'export TERM=xterm' >> /etc/profile
 
+# Scripts
 COPY scripts/audit-logger.sh    /usr/local/bin/audit-logger.sh
 COPY scripts/session-wrapper.sh /usr/local/bin/session-wrapper.sh
 COPY scripts/entrypoint.sh      /usr/local/bin/entrypoint.sh
@@ -51,8 +60,6 @@ RUN chmod +x \
     /usr/local/bin/audit-logger.sh \
     /usr/local/bin/session-wrapper.sh \
     /usr/local/bin/entrypoint.sh
-
-RUN ssh-keygen -A
 
 EXPOSE 8080
 
